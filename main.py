@@ -11,6 +11,13 @@ import util
 
 API_URL = 'https://en.wikipedia.org/w/api.php'
 
+"""
+Citation is a namedtuple representing a sentence and its source.
+
+Args:
+    sentence: A sentence in a wikipedia article.
+    url: The source of information that produced the sentence.
+"""
 Citation = typing.NamedTuple("Citation", [('sentence', str), ('url', str)])
 
 
