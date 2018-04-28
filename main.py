@@ -1,7 +1,9 @@
 """A script for generating a citation list for a wikipedia article."""
 import argparse
-import pprint
+import json
 import re
+
+import article_scraper
 
 import requests
 
@@ -19,6 +21,17 @@ Args:
     url: The source of information that produced the sentence.
 """
 Citation = typing.NamedTuple("Citation", [('sentence', str), ('url', str)])
+
+
+"""
+ArticleSummary is a namedtuple representing a sentence and the content its
+summarised from.
+
+Args:
+    sentence: A sentence in a wikipedia article.
+    url: The article content the sentence was derived from.
+"""
+ArticleSummary = typing.NamedTuple("ArticleSummary", [('sentence', str), ('source', str)])
 
 
 def _cleanup_wiki_links(sentence: str) -> str:
@@ -113,6 +126,20 @@ def get_wikipedia_article(title: str) -> str:
     return response["query"]["pages"][0]["revisions"][0]["content"]
 
 
+def create_article_summary_set(citations: [Citation]) -> [ArticleSummary]:
+    """Create a list of summaries and their original article content."""
+    summaries = []
+    for c in citations:
+        print("Reading", c.url)
+        try:
+            source = article_scraper.get_text_content_from_article(c.url)
+            summary = ArticleSummary(sentence=c.sentence, source=source)
+            summaries.append(summary)
+        except article_scraper.DisallowedError:
+            pass
+    return summaries
+
+
 def main(title: str):
     """
     Get a list of citations from a wikipedia article with the given title.
@@ -125,9 +152,11 @@ def main(title: str):
     """
     wiki_markup = get_wikipedia_article(title=title)
     citations = create_citation_set(wiki_markup=wiki_markup)
-    # Pretty print the results
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(citations)
+    data = create_article_summary_set(citations)
+    json_output = json.dumps([d._asdict() for d in data])
+    with open("{}.json".format(title), "w") as file:
+        file.write(json_output)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(

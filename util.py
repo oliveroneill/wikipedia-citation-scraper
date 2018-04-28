@@ -82,6 +82,8 @@ CONTRACTIONS = {
 def clean_text(text: str) -> str:
     # Convert words to lower case
     text = text.lower()
+    # Required since some website have different characters for single quotes
+    text = re.sub(r'[‘’]', '\'', text)
     text = text.split()
     if len(text) == 0:
         return ""
@@ -94,6 +96,7 @@ def clean_text(text: str) -> str:
             new_text.append(word)
         text = " ".join(new_text)
     # Format words and remove unwanted characters
+    text = re.sub(r'[”“]', '"', text)
     text = re.sub(r'[_"\;%()|&*%.,!?:\{\}#$@\[\]/]', '', text)
     text = re.sub(r'-', ' ', text)
     text = re.sub(r'\'', '', text)

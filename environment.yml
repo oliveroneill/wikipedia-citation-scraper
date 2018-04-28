@@ -1,4 +1,4 @@
-name: wikipedia-citation-scraper
+name: wiki-data-scraper
 channels:
 - defaults
 dependencies:
@@ -27,7 +27,11 @@ dependencies:
 - sqlite=3.22.0=h3efe00b_0
 - tk=8.6.7=h35a86e2_3
 - urllib3=1.22=py36h68b9469_0
+- w3lib=1.19.0=py36_0
 - wheel=0.30.0=py36h5eb2c71_1
 - xz=5.2.3=h0278029_2
 - zlib=1.2.11=hf3cbc9b_2
-prefix: /Users/oliveroneill04/anaconda/envs/wikipedia-citation-scraper
+- pip:
+  - beautifulsoup4==4.6.0
+  - bs4==0.0.1
+prefix: /Users/oliveroneill04/anaconda/envs/wiki-data-scraper
