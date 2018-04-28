@@ -1,8 +1,9 @@
-name: wiki-data-scraper
+name: wikipedia-citation-scraper
 channels:
 - defaults
 dependencies:
 - asn1crypto=0.24.0=py36_0
+- attrs=17.4.0=py36_0
 - ca-certificates=2017.08.26=ha1e5d58_0
 - certifi=2018.1.18=py36_0
 - cffi=1.11.5=py36h342bebf_0
@@ -13,12 +14,16 @@ dependencies:
 - libcxxabi=4.0.1=hebd6815_0
 - libedit=3.1=hb4e282d_0
 - libffi=3.2.1=h475c297_4
+- more-itertools=4.1.0=py36_0
 - ncurses=6.0=hd04f020_2
 - openssl=1.0.2n=hdbc3d79_0
 - pip=9.0.1=py36_5
+- pluggy=0.6.0=py36hb1d0581_0
+- py=1.5.3=py36_0
 - pycparser=2.18=py36h724b2fc_1
 - pyopenssl=17.5.0=py36h51e4350_0
 - pysocks=1.6.8=py36_0
+- pytest=3.5.0=py36_0
 - python=3.6.4=hc167b69_3
 - readline=7.0=hc1231fa_4
 - requests=2.18.4=py36h4516966_1
@@ -34,4 +39,4 @@ dependencies:
 - pip:
   - beautifulsoup4==4.6.0
   - bs4==0.0.1
-prefix: /Users/oliveroneill04/anaconda/envs/wiki-data-scraper
+prefix: /Users/oliveroneill04/anaconda/envs/wikipedia-citation-scraper
