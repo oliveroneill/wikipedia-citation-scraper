@@ -1,6 +1,7 @@
 """A script for generating a citation list for a wikipedia article."""
 import argparse
 import json
+import os
 import re
 
 import article_scraper
@@ -154,7 +155,11 @@ def main(title: str):
     citations = create_citation_set(wiki_markup=wiki_markup)
     data = create_article_summary_set(citations)
     json_output = json.dumps([d._asdict() for d in data])
-    with open("{}.json".format(title), "w") as file:
+    dirname = "output"
+    # Make directory if it doesn't exist
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+    with open("{0}/{1}.json".format(dirname, title), "w") as file:
         file.write(json_output)
 
 
