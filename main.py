@@ -135,7 +135,7 @@ def create_article_summary_set(citations: [Citation]) -> [ArticleSummary]:
             source = article_scraper.get_text_content_from_article(c.url)
             summary = ArticleSummary(sentence=c.sentence, source=source)
             summaries.append(summary)
-        except article_scraper.DisallowedError:
+        except (article_scraper.DisallowedError, article_scraper.FailedToReadError):
             pass
     return summaries
 

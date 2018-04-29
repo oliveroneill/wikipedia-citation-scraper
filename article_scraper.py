@@ -1,4 +1,5 @@
 """A module for scraping articles on the internet."""
+from http.client import HTTPException
 from urllib.error import URLError
 from urllib.parse import urljoin, urlsplit
 from urllib.robotparser import RobotFileParser
@@ -10,6 +11,12 @@ import requests
 import util
 
 from w3lib.html import replace_entities
+
+
+class FailedToReadError(Exception):
+    """Used when some error occurs while reading the article."""
+
+    pass
 
 
 class DisallowedError(Exception):
@@ -25,7 +32,7 @@ def robot_check(url: str) -> bool:
     parser = RobotFileParser(robots_url)
     try:
         parser.read()
-    except URLError:
+    except (URLError, HTTPException):
         return False
     return parser.can_fetch('*', url)
 
@@ -45,7 +52,10 @@ def get_text_content_from_article(url: str) -> str:
     """
     if not robot_check(url):
         raise DisallowedError("Disallowed: {0}".format(url))
-    html = requests.get(url).text
+    try:
+        html = requests.get(url).text
+    except requests.exceptions.RequestException:
+        raise FailedToReadError(url)
     soup = BeautifulSoup(html, "html.parser")
     text = '. '.join([p.text for p in soup.find_all('p')])
     return util.clean_text(replace_entities(text))
