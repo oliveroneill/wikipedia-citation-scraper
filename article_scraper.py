@@ -36,7 +36,10 @@ def robot_check(url: str) -> bool:
     parser = RobotFileParser(robots_url)
     try:
         parser.read()
-    except (URLError, HTTPException, CertificateError, ConnectionError):
+    except:
+        # We don't want to crash the app if we can't read
+        # for whatever reason, so we handle any error here
+        # and ignore that article
         return False
     return parser.can_fetch('*', url)
 
