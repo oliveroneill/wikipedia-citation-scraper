@@ -1,5 +1,6 @@
 """A module for scraping articles on the internet."""
 from http.client import HTTPException
+from ssl import CertificateError
 from urllib.error import URLError
 from urllib.parse import urljoin, urlsplit
 from urllib.robotparser import RobotFileParser
@@ -35,7 +36,7 @@ def robot_check(url: str) -> bool:
     parser = RobotFileParser(robots_url)
     try:
         parser.read()
-    except (URLError, HTTPException):
+    except (URLError, HTTPException, CertificateError):
         return False
     return parser.can_fetch('*', url)
 
