@@ -27,7 +27,10 @@ class DisallowedError(Exception):
 
 def robot_check(url: str) -> bool:
     """Check whether we're allowed to scrape this URL."""
-    base_url = "{0.scheme}://{0.netloc}/".format(urlsplit(url))
+    split_url = urlsplit(url)
+    base_url = "{0.scheme}://{0.netloc}/".format(split_url)
+    if split_url.netloc == '':
+        return False
     robots_url = urljoin(base_url, '/robots.txt')
     parser = RobotFileParser(robots_url)
     try:
