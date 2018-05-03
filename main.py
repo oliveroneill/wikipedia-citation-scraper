@@ -39,7 +39,7 @@ def _cleanup_wiki_links(sentence: str) -> str:
     # Remove nowiki tags
     sentence = sentence.replace('<nowiki/>', '')
     # Replace links with its name "[[Liars (band)|Liars]]" -> "Liars"
-    sentence = re.sub(r'\[\[[^\]]+\|([^\]]+)+\]\]', r'\1', sentence)
+    sentence = re.sub(r'\[\[[^\]]+\|([^\]]+)\]\]', r'\1', sentence)
     # Replace links with its name "[[Liars]]" -> "Liars"
     return re.sub(r'\[\[([^\|]+?)\]\]', r'\1', sentence)
 
