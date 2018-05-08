@@ -1,16 +1,10 @@
 """A module for scraping articles on the internet."""
-from http.client import HTTPException
-from ssl import CertificateError
-from urllib.error import URLError
 from urllib.parse import urljoin, urlsplit
 from urllib.robotparser import RobotFileParser
 
 from bs4 import BeautifulSoup
-
 import requests
-
 import util
-
 from w3lib.html import replace_entities
 
 
