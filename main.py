@@ -5,11 +5,8 @@ import os
 import re
 
 import article_scraper
-
 import requests
-
 import typing
-
 import util
 
 API_URL = 'https://en.wikipedia.org/w/api.php'
