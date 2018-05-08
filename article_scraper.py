@@ -60,7 +60,7 @@ def get_text_content_from_article(url: str) -> str:
     if not robot_check(url):
         raise DisallowedError("Disallowed: {0}".format(url))
     try:
-        html = requests.get(url).text
+        html = requests.get(url, timeout=30).text
     except requests.exceptions.RequestException:
         raise FailedToReadError(url)
     soup = BeautifulSoup(html, "html.parser")
