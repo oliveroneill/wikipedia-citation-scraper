@@ -9,4 +9,6 @@ if __name__ == "__main__":
         try:
             main.main(s)
         except Exception:
+            # We catch and ignore all errors since this script
+            # should be set and forget
             pass
