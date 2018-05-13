@@ -1,11 +1,38 @@
 """A module for scraping articles on the internet."""
 from urllib.parse import urljoin, urlsplit
+import urllib.request
 from urllib.robotparser import RobotFileParser
 
 from bs4 import BeautifulSoup
 import requests
 import util
 from w3lib.html import replace_entities
+
+
+class TimeoutRobotFileParser(RobotFileParser):
+    """A slightly modified RobotFileParser with timeout option."""
+
+    def __init__(self, url='', timeout=30):
+        super().__init__(url)
+        self.timeout = timeout
+
+    def read(self):
+        """
+        Reads the robots.txt URL and feeds it to the parser.
+
+        This is a copy of the urllib implementation but with the
+        timeout option specified.
+        """
+        try:
+            f = urllib.request.urlopen(self.url, timeout=self.timeout)
+        except urllib.error.HTTPError as err:
+            if err.code in (401, 403):
+                self.disallow_all = True
+            elif err.code >= 400 and err.code < 500:
+                self.allow_all = True
+        else:
+            raw = f.read()
+            self.parse(raw.decode("utf-8").splitlines())
 
 
 class FailedToReadError(Exception):
@@ -27,7 +54,7 @@ def robot_check(url: str) -> bool:
     if split_url.netloc == '':
         return False
     robots_url = urljoin(base_url, '/robots.txt')
-    parser = RobotFileParser(robots_url)
+    parser = TimeoutRobotFileParser(robots_url)
     try:
         parser.read()
     except Exception:
